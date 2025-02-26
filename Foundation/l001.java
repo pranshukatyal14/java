@@ -110,6 +110,22 @@ public class l001{
         }
         return res;
     }
+    public static int GCD(int a, int b){
+        int dividend=a;
+        int divisor=b;
+        while(dividend %divisor !=0){
+            int rem= dividend%divisor;
+            dividend=divisor;
+            divisor=rem;
+        }
+        return divisor;
+    }
+    public static boolean isPythagorean(int a, int b, int c){
+        if((a*a + b*b == c*c) || (a*a +c*c==b*b) || (b*b + c*c==a*a)){
+            return true;
+        }
+        return false;
+    }
     public static void main(String[] args){
         printHello();
     }
