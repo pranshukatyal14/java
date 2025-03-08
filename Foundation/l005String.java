@@ -1,3 +1,5 @@
+import java.util.Scanner;
+import java.util.ArrayList;
 public class l005String{
     public static void test1(){
         String str="szcszxvwesz";
@@ -150,7 +152,7 @@ public class l005String{
         return true;
     }
     public static void allSubString(String str){
-        for(int i=0;i<str.length;i++){
+        for(int i=0;i<str.length();i++){
             for(int len=1;i+len<=str.length();len++){
                 System.out.println(str.substring(i,i+len));
             }
@@ -165,8 +167,8 @@ public class l005String{
         sb.append(str.charAt(0));
         int i=1;
         while(i<str.length()){
-            while(i<str.length && str.charAt(i-1)==str.charAt(i)){
-                i++
+            while(i<str.length() && str.charAt(i-1)==str.charAt(i)){
+                i++;
             }
             if(i<str.length()){
                 sb.append(str.charAt(i));
@@ -177,7 +179,7 @@ public class l005String{
     }
 
     public static String compression2(String str){
-        if(str.length<=1){
+        if(str.length()<=1){
             return str;
         }
         StringBuilder sb=new StringBuilder();
@@ -185,7 +187,7 @@ public class l005String{
         int i=1;
         while(i<str.length()){
             int count=1;
-            while(i<str.length() && str.charAt(i-1)==str.char(i)){
+            while(i<str.length() && str.charAt(i-1)==str.charAt(i)){
                 count++;
                 i++;
             }
@@ -193,7 +195,7 @@ public class l005String{
                 sb.append(count);
             }
             if(i<str.length()){
-                sb.append(str.charAt(i))
+                sb.append(str.charAt(i));
             }
         }
         return sb.toString();
@@ -216,10 +218,10 @@ public class l005String{
         StringBuilder sb=new StringBuilder();
         for(int i=0;i<str.length();i++){
             char ch=str.charAt(i);
-            if(ch>="a" && ch<="z"){
-                sb.append((char)(ch-"a"+"A"))
+            if(ch>='a' && ch<='z'){
+                sb.append((char)(ch-'a'+'A'));
             }else{
-                sb.append((char)(ch-"A"+"a"))
+                sb.append((char)(ch-'A'+'a'));
             }
         }
         return sb.toString();
@@ -257,10 +259,112 @@ public class l005String{
             char ch=str.charAt(i);
             int size=ans.size();
             for(int j=0;i<size;i++){
-                ans.add(ans.get(j)+ch)
+                ans.add(ans.get(j)+ch);
             }
         }
         return ans;
+    }
+    public static boolean isPrime(int n){
+        for(int i=2;i*i<=n;i++){
+            if(n%i==0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void solution(ArrayList<Integer>al){
+        ArrayList<Integer>ans=new ArrayList<>();
+        for(int ele:al){
+            if(!isPrime(ele)){
+                ans.add(ele);
+            }
+        }
+        al.clear();
+        for(int ele:ans){
+            al.add(ele);
+        }
+    }
+    // permutation
+    public static void appendCharInString(String str,char ch, ArrayList<String>ans){
+        for(int i=0;i<str.length();i++){
+            String s=str.substring(0,i)+ch+str.substring(i);
+            ans.add(s);
+        }
+    }
+
+    public static ArrayList<String> permutation(String str){
+        ArrayList<String>ans=new ArrayList<>();
+        ans.add("");
+        for(int i=0;i<str.length();i++){
+            char ch=str.charAt(i);
+            ArrayList<String>smallAns=new ArrayList<>();
+            for(String s:ans){
+                appendCharInString(s,ch,smallAns);
+            }
+            ans=smallAns;
+        }
+        return ans;
+    }
+    public void reverseRange(char[]arr,int i,int j){
+        while(i<j){
+            char ch=arr[i];
+            arr[i]=arr[j];
+            arr[j]=ch;
+            i++;
+            j--;
+        }
+    }
+    public  String reverseStr(String s,int k){
+        if(k==0 || k==1 || s.length()<=1){
+            return s;
+        }
+        int i=0;
+        int n=s.length();
+        char[] arr=s.toCharArray();
+        while(i<n){
+            if(i+k-1<n){
+                reverseRange(arr,i,i+k-1);
+                i+=2*k;
+            }else{
+                reverseRange(arr,i,n-1);
+                break;
+            }
+        }
+        return new String(arr);
+    }
+    public static void primeNumbers(int n , ArrayList<Integer>ans){
+        for(int i=2;i*i<=n;i++){
+            if(isPrime(i)){
+                ans.add(i);
+            }
+        }
+    }
+
+    public static void primeFactors(int num,ArrayList<Integer>list){
+        int idx=0;
+        while(num!=1 && idx<list.size()){
+            int count=0;
+            while(num % list.get(idx)==0){
+                num/=list.get(idx);
+                count++;
+            }
+            if(count>0){
+                System.out.print(list.get(idx)+"^"+count+" ");
+            }
+            idx++;
+        }
+        if(num>1){
+            System.out.print(num+"^"+1);
+        }
+        System.out.println();
+    }
+    public static void primeFactorsForQuery(int[] query){
+        ArrayList<Integer>list=new ArrayList<>();
+        primeNumbers(10000,list);
+        for(int ele:query){
+            primeFactors(ele,list);
+        }
     }
 
     public static void main(String[] args){
